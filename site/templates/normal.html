@@ -1,7 +1,16 @@
 <html>
     <head>
+        <title>
+            {{ .Page.Meta.Title }} - protopit
+        </title>
+        {{ .Site.CssTag }}
     </head>
     <body>
-        this is a normal page.
+        <article>
+            <h1>{{ .Page.Meta.Title }}</h1>
+            <section class="content">
+                {{ .Page.Content }}
+            </section>
+        </article>
     </body>
 </html>

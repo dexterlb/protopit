@@ -16,14 +16,8 @@ type Site struct {
 	Pages      map[string]*Page
 	OutputDir  string
 	Template   *template.Template
-}
-
-type Page struct {
-	Filename string
-	Meta     *MetaData
-	Name     string
-	Html     []byte
-	Type     string
+	CssTag     template.HTML
+	StyleDir   string
 }
 
 func Init(variant string, contentDir string) *Site {
@@ -39,6 +33,7 @@ func Init(variant string, contentDir string) *Site {
 	return &Site{
 		ContentDir: properContentDir,
 		OutputDir:  "output",
+		StyleDir:   "styles",
 		Variant:    variant,
 		Template:   template,
 		Pages:      make(map[string]*Page),
