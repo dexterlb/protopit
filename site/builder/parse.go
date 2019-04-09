@@ -1,6 +1,7 @@
 package builder
 
 import (
+	"fmt"
 	"io"
 	"io/ioutil"
 
@@ -9,16 +10,16 @@ import (
 	"github.com/gomarkdown/markdown/html"
 )
 
-// return (ast.GoToNext, true) to tell html renderer to skip rendering this node
-// (because you've rendered it)
-func renderHookDropCodeBlock(w io.Writer, node ast.Node, entering bool) (ast.WalkStatus, bool) {
-	// skip all nodes that are not CodeBlock nodes
-	if _, ok := node.(*ast.CodeBlock); !ok {
-		return ast.GoToNext, false
+func markdownInspect(s *Site, p *Page) func(io.Writer, ast.Node, bool) (ast.WalkStatus, bool) {
+	return func(w io.Writer, anyNode ast.Node, entering bool) (ast.WalkStatus, bool) {
+		switch node := anyNode.(type) {
+		case *ast.CodeBlock:
+			if string(node.Info) == "meta" {
+				p.Meta = ParseMetaData(node.Literal)
+			}
+		}
+		return ast.GoToNext, false // do nothing
 	}
-	// custom rendering logic for ast.CodeBlock. By doing nothing it won't be
-	// present in the output
-	return ast.GoToNext, true
 }
 
 func (s *Site) ParsePage(filename string, name string) {
@@ -28,13 +29,16 @@ func (s *Site) ParsePage(filename string, name string) {
 		Type:     "normal.html",
 	}
 	s.ParseMarkdownPage(page)
+	if page.Meta == nil {
+		noerr("page has no metadata", fmt.Errorf("no metadata in %s", filename))
+	}
 	s.Pages[page.Name] = page
 }
 
 func (s *Site) ParseMarkdownPage(page *Page) {
 	opts := html.RendererOptions{
 		Flags:          html.CommonFlags,
-		RenderNodeHook: renderHookDropCodeBlock,
+		RenderNodeHook: markdownInspect(s, page),
 	}
 	renderer := html.NewRenderer(opts)
 	data, err := ioutil.ReadFile(page.Filename)

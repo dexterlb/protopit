@@ -20,6 +20,7 @@ type Site struct {
 
 type Page struct {
 	Filename string
+	Meta     *MetaData
 	Name     string
 	Html     []byte
 	Type     string
