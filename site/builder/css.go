@@ -2,13 +2,23 @@ package builder
 
 import (
 	"bytes"
+	"context"
+	"crypto/sha256"
+	"encoding/base64"
 	"fmt"
 	"html/template"
+	"os"
+	"path/filepath"
 
 	"github.com/wellington/go-libsass"
 )
 
+var sassSite *Site
+
 func (s *Site) RenderCss() {
+	libsass.RegisterSassFunc("image($name)", sassImage)
+	sassSite = s
+
 	dummy := []byte(`@import 'main'`)
 	w := &bytes.Buffer{}
 	comp, err := libsass.New(w, bytes.NewReader(dummy))
@@ -19,5 +29,32 @@ func (s *Site) RenderCss() {
 	noerr("cannot initialise style", err)
 	noerr("cannot compile style", comp.Run())
 
-	s.CssTag = template.HTML(fmt.Sprintf("<style type=\"text/css\">\n%s\n</style>", w))
+	s.writeCss(w.Bytes())
+}
+
+func sassImage(ctx context.Context, usv libsass.SassValue) (*libsass.SassValue, error) {
+	args := []interface{}{""}
+	noerr("cannot process sass image() function", libsass.Unmarshal(usv, &args))
+
+	res, err := libsass.Marshal(
+		fmt.Sprintf("url('%s')", sassSite.GetImageData(args[0].(string))),
+	)
+	return &res, err
+}
+
+func (s *Site) writeCss(data []byte) {
+	hashRaw := sha256.Sum256(data)
+	hash := make([]byte, 128)
+	base64.URLEncoding.Encode(hash, hashRaw[:])
+	name := fmt.Sprintf("style.%s.css", string(hash[0:8]))
+
+	f, err := os.Create(filepath.Join(s.OutputDir, name))
+	noerr("cannot create output css file", err)
+	defer f.Close()
+	_, err = f.Write(data)
+	noerr("cannot write css", err)
+
+	s.CssTag = template.HTML(fmt.Sprintf(
+		`<link rel="stylesheet" type="text/css" href="/%s">`, name,
+	))
 }

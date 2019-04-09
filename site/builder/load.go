@@ -3,6 +3,7 @@ package builder
 import (
 	"fmt"
 	"html/template"
+	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -18,6 +19,7 @@ type Site struct {
 	Template   *template.Template
 	CssTag     template.HTML
 	StyleDir   string
+	MediaDir   string
 }
 
 func Init(variant string, contentDir string) *Site {
@@ -34,10 +36,16 @@ func Init(variant string, contentDir string) *Site {
 		ContentDir: properContentDir,
 		OutputDir:  "output",
 		StyleDir:   "styles",
+		MediaDir:   "media",
 		Variant:    variant,
 		Template:   template,
 		Pages:      make(map[string]*Page),
 	}
+}
+
+func (s *Site) Clean() {
+	noerr("cannot clean output dir", os.RemoveAll(s.OutputDir))
+	noerr("cannot create output dir", os.MkdirAll(s.OutputDir, os.ModePerm))
 }
 
 func (s *Site) LoadPages() {
