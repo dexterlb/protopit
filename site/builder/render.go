@@ -1,6 +1,7 @@
 package builder
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 )
@@ -22,7 +23,7 @@ func (s *Site) RenderPage(p *Page) {
 	f, err := os.Create(filepath.Join(outDir, "index.html"))
 	defer f.Close()
 	noerr("cannot create output file", err)
-	err = s.Template.ExecuteTemplate(f, p.Type, TemplateData{
+	err = s.Template.ExecuteTemplate(f, fmt.Sprintf("%s.html", p.Meta.Type), TemplateData{
 		Page: p,
 		Site: s,
 	})

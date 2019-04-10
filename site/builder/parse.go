@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 
 	"github.com/gomarkdown/markdown"
+	"github.com/gomarkdown/markdown/parser"
 	"github.com/gomarkdown/markdown/ast"
 	"github.com/gomarkdown/markdown/html"
 )
@@ -17,7 +18,7 @@ func markdownInspect(s *Site, p *Page) func(io.Writer, ast.Node, bool) (ast.Walk
 			if string(node.Info) == "meta" {
 				p.Meta = ParseMetaData(node.Literal)
 			}
-            return ast.GoToNext, true // skip
+			return ast.GoToNext, true // skip
 		}
 		return ast.GoToNext, false // do nothing
 	}
@@ -27,7 +28,6 @@ func (s *Site) ParsePage(filename string, name string) {
 	page := &Page{
 		Name:     name,
 		Filename: filename,
-		Type:     "normal.html",
 	}
 	s.ParseMarkdownPage(page)
 	if page.Meta == nil {
@@ -42,8 +42,16 @@ func (s *Site) ParseMarkdownPage(page *Page) {
 		RenderNodeHook: markdownInspect(s, page),
 	}
 	renderer := html.NewRenderer(opts)
+
+	extensions := parser.CommonExtensions |
+		parser.AutoHeadingIDs |
+		parser.SuperSubscript |
+		parser.Footnotes
+
+	p := parser.NewWithExtensions(extensions)
+
 	data, err := ioutil.ReadFile(page.Filename)
 	noerr("cannot read file", err)
-	html := markdown.ToHTML(data, nil, renderer)
+	html := markdown.ToHTML(data, p, renderer)
 	page.Html = html
 }

@@ -14,6 +14,8 @@ func build() {
 }
 
 func serve(address string) {
+	build()
+
 	http.Handle("/", http.StripPrefix("/", http.FileServer(http.Dir("output/"))))
 	log.Printf("web server at %s.", address)
 	http.ListenAndServe(address, nil)
