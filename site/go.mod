@@ -8,6 +8,6 @@ require (
 	github.com/mattn/go-zglob v0.0.1
 	github.com/urfave/cli v1.20.0
 	github.com/wellington/go-libsass v0.9.2
-	golang.org/x/net v0.0.0-20190404232315-eb5bcb51f2a3 // indirect
+	golang.org/x/net v0.0.0-20190404232315-eb5bcb51f2a3
 	rsc.io/quote v1.5.2
 )
