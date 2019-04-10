@@ -1,5 +1,6 @@
 ```meta
 title = "The Foo"
+date = 2019-04-09
 ```
 
 ---

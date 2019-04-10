@@ -1,10 +1,16 @@
 package builder
 
-import "github.com/BurntSushi/toml"
+import (
+	"fmt"
+	"time"
+
+	"github.com/BurntSushi/toml"
+)
 
 type MetaData struct {
 	Title string
 	Type  string
+	Date  time.Time
 }
 
 func ParseMetaData(data []byte) *MetaData {
@@ -14,6 +20,9 @@ func ParseMetaData(data []byte) *MetaData {
 
 	if meta.Type == "" {
 		meta.Type = "normal"
+	}
+	if meta.Date.IsZero() {
+		noerr("cannot parse metadata", fmt.Errorf("no date!"))
 	}
 	return &meta
 }

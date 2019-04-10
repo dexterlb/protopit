@@ -22,7 +22,7 @@ func (s *Site) Render() {
 
 func (s *Site) RenderPage(p *Page) {
 	// render html from template
-	node := s.renderTemplate(fmt.Sprintf("%s.html", p.Meta.Type), TemplateData{
+	node := s.renderTemplate("main.html", TemplateData{
 		Page: p,
 		Site: s,
 	})

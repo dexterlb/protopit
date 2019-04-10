@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="utf-8">
+        <title>
+            {{ .Page.Meta.Title }} - protopit
+        </title>
+        {{ .Site.CssTag }}
+    </head>
+    <body>
+		<aside class="sidebar">
+			<div class="logo"></div>
+			<nav>
+				<a href="/">Home</a>
+				<l url="foo">Foo</a>
+				<l url="bar">Bar</a>
+			</nav>
+		</aside>
+        <article>
+            {{ if ( eq .Page.Meta.Type "normal" ) }}
+                {{ template "normal.html" . }}
+            {{ else }}
+                Page is {{ .Page.Meta.Type }}
+            {{ end }}
+        </article>
+    </body>
+</html>
