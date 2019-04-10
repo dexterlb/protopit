@@ -1,10 +1,10 @@
-# Foo
-
 ```meta
 title = "The Foo"
 ```
 
 ---
+
+a link for me: <l url="foo">boo</l>
 
 # h1 Heading 8-)
 ## h2 Heading

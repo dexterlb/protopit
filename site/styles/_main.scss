@@ -10,6 +10,9 @@ img {
 }
 a {
 	color: #2ECC40;
+	&.active {
+		color: #ccc;
+	}
 	text-decoration: none;
 }
 h1, h2, strong {

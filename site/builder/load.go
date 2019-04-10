@@ -56,7 +56,7 @@ func (s *Site) LoadPages() {
 		noerr("cannot get file path", err)
 		name := regexp.MustCompile(
 			`^(.*)\.[^.]*\.[^.]*$`,
-		).FindStringSubmatch(strings.TrimPrefix(filename, s.ContentDir))[1]
+		).FindStringSubmatch(strings.TrimPrefix(filename, fmt.Sprintf("%s/", s.ContentDir)))[1]
 
 		s.ParsePage(filename, name)
 	}

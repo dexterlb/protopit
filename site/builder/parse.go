@@ -6,9 +6,9 @@ import (
 	"io/ioutil"
 
 	"github.com/gomarkdown/markdown"
-	"github.com/gomarkdown/markdown/parser"
 	"github.com/gomarkdown/markdown/ast"
 	"github.com/gomarkdown/markdown/html"
+	"github.com/gomarkdown/markdown/parser"
 )
 
 func markdownInspect(s *Site, p *Page) func(io.Writer, ast.Node, bool) (ast.WalkStatus, bool) {

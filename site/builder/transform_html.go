@@ -1,7 +1,9 @@
 package builder
 
 import (
+	"bytes"
 	"fmt"
+	"html/template"
 
 	"golang.org/x/net/html"
 )
@@ -15,7 +17,7 @@ func (s *Site) transformHtml(p *Page, node *html.Node) *html.Node {
 		for i := range newNodes {
 			parent.InsertBefore(newNodes[i], next)
 		}
-		if (len(newNodes) > 0) {
+		if len(newNodes) > 0 {
 			return newNodes[0]
 		} else {
 			return nil
@@ -46,4 +48,30 @@ func (s *Site) replaceNode(p *Page, node *html.Node) []*html.Node {
 		}
 	}
 	return nil
+}
+
+func (t *TransformData) Attr() func(string) string {
+	return func(name string) string {
+		for _, a := range t.Node.Attr {
+			if a.Key == name {
+				return a.Val
+			}
+		}
+		return ""
+	}
+}
+
+func (t *TransformData) AbsPageUrl() func(string) string {
+	return func(name string) string {
+		return t.Site.AbsPageUrl(name)
+	}
+}
+
+func (t *TransformData) Content() template.HTML {
+	w := &bytes.Buffer{}
+	for child := t.Node.FirstChild; child != nil; child = child.NextSibling {
+		err := html.Render(w, child)
+		noerr("cannot render html node", err)
+	}
+	return template.HTML(w.Bytes())
 }
