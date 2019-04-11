@@ -33,6 +33,9 @@ func (s *Site) ParsePage(filename string, name string) {
 	if page.Meta == nil {
 		noerr("page has no metadata", fmt.Errorf("no metadata in %s", filename))
 	}
+	if page.Meta.NameOverride != nil {
+		page.Name = *page.Meta.NameOverride
+	}
 	s.Pages[page.Name] = page
 }
 

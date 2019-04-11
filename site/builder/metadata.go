@@ -8,9 +8,10 @@ import (
 )
 
 type MetaData struct {
-	Title string
-	Type  string
-	Date  time.Time
+	Title        string
+	Type         string
+	Date         time.Time
+	NameOverride *string `toml:"name"`
 }
 
 func ParseMetaData(data []byte) *MetaData {

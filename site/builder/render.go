@@ -2,7 +2,6 @@ package builder
 
 import (
 	"bytes"
-	"fmt"
 	"os"
 	"path/filepath"
 
@@ -39,17 +38,6 @@ func (s *Site) RenderPage(p *Page) {
 	// render html
 	err = html.Render(f, node)
 	noerr("cannot render html", err)
-}
-
-func (s *Site) AbsPageUrl(name string) string {
-	return filepath.Join("/", s.PageUrl(name))
-}
-
-func (s *Site) PageUrl(name string) string {
-	if _, ok := s.Pages[name]; !ok {
-		noerr("cannot get page url", fmt.Errorf("no such page: %s", name))
-	}
-	return filepath.Join(name, s.Variant)
 }
 
 func (s *Site) renderTemplate(name string, data interface{}) *html.Node {

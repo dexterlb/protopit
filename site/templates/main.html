@@ -8,20 +8,26 @@
         {{ .Site.CssTag }}
     </head>
     <body>
-		<aside class="sidebar">
-			<div class="logo"></div>
-			<nav>
-				<a href="/">Home</a>
-				<l url="foo">Foo</a>
-				<l url="bar">Bar</a>
-			</nav>
-		</aside>
-        <article>
-            {{ if ( eq .Page.Meta.Type "normal" ) }}
-                {{ template "normal.html" . }}
-            {{ else }}
-                Page is {{ .Page.Meta.Type }}
-            {{ end }}
-        </article>
+        {{ if ( eq .Page.Meta.Type "landing" ) }}
+            {{ template "landing.html" . }}
+        {{ else }}
+            <aside class="sidebar">
+                <div class="logo"></div>
+                <nav>
+                    <l url="">Home</l>
+                    <l url="foo">Foo</a>
+                    <l url="bar">Bar</a>
+                </nav>
+            </aside>
+            <article>
+                {{ if ( eq .Page.Meta.Type "normal" ) }}
+                    {{ template "normal.html" . }}
+                {{ else if ( eq .Page.Meta.Type "home" ) }}
+                    {{ template "home.html" . }}
+                {{ else }}
+                    Page is {{ .Page.Meta.Type }}
+                {{ end }}
+            </article>
+        {{ end }}
     </body>
 </html>

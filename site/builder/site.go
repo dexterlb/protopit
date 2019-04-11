@@ -17,6 +17,7 @@ type Site struct {
 	CssTag      template.HTML
 	StyleDir    string
 	MediaDir    string
+	AllVariants map[string]*Site
 }
 
 func Init(variant string, contentDir string) *Site {
