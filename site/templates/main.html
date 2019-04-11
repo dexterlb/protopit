@@ -20,12 +20,10 @@
                 </nav>
             </aside>
             <article>
-                {{ if ( eq .Page.Meta.Type "normal" ) }}
-                    {{ template "normal.html" . }}
-                {{ else if ( eq .Page.Meta.Type "home" ) }}
+                {{ if ( eq .Page.Meta.Type "home" ) }}
                     {{ template "home.html" . }}
                 {{ else }}
-                    Page is {{ .Page.Meta.Type }}
+                    {{ template "normal.html" . }}
                 {{ end }}
             </article>
         {{ end }}
