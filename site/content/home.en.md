@@ -1,6 +1,6 @@
 ```meta
 type = "home"
-name = ""
+url = ""
 title = "the home page"
 date = 2019-04-11
 ```

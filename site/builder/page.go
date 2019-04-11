@@ -12,15 +12,17 @@ type Page struct {
 	Meta     *MetaData
 	Name     string
 	Html     []byte
+	Url		 string
 }
 
 func (p *Page) Content() template.HTML {
 	return template.HTML(p.Html)
 }
 
-func (s *Site) PageUrl(name string) string {
+func (s *Site) Page(name string) *Page {
 	site := s
 	var ok bool
+	var page *Page
 
 	sname := strings.SplitN(name, ":", 2)
 	if len(sname) >= 2 {
@@ -31,14 +33,15 @@ func (s *Site) PageUrl(name string) string {
 		}
 	}
 
-	if _, ok = site.Pages[name]; !ok {
+	if page, ok = site.Pages[name]; !ok {
 		noerr("cannot get page url", fmt.Errorf("no such page: %s:%s", name, site.Variant))
 	}
 
-	if site.Variant == "any" {
-		return filepath.Join(name)
-	}
-	return filepath.Join(name, site.Variant)
+	return page
+}
+
+func (s *Site) PageUrl(name string) string {
+	return s.Page(name).Url
 }
 
 func (s *Site) AbsPageUrl(name string) string {

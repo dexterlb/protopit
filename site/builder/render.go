@@ -29,7 +29,7 @@ func (s *Site) RenderPage(p *Page) {
 	s.transformHtml(p, node)
 
 	// create output file
-	outDir := filepath.Join(s.OutputDir, s.PageUrl(p.Name))
+	outDir := filepath.Join(s.OutputDir, p.Url)
 	noerr("cannot create dir", os.MkdirAll(outDir, os.ModePerm))
 	f, err := os.Create(filepath.Join(outDir, "index.html"))
 	defer f.Close()

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"path/filepath"
 
 	"github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/ast"
@@ -30,12 +31,20 @@ func (s *Site) ParsePage(filename string, name string) {
 		Filename: filename,
 	}
 	s.ParseMarkdownPage(page)
+
 	if page.Meta == nil {
 		noerr("page has no metadata", fmt.Errorf("no metadata in %s", filename))
 	}
-	if page.Meta.NameOverride != nil {
-		page.Name = *page.Meta.NameOverride
+	if page.Meta.Url != nil {
+		page.Url = filepath.Join(*page.Meta.Url)
+	} else {
+		page.Url = filepath.Join(page.Name)
 	}
+
+	if s.Variant != "any" {
+		page.Url = filepath.Join(page.Url, s.Variant)
+	}
+
 	s.Pages[page.Name] = page
 }
 
