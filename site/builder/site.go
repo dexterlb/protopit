@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"path/filepath"
 
+	"github.com/DexterLB/protopit/site/translator"
 	"github.com/mattn/go-zglob"
 )
 
@@ -18,17 +19,28 @@ type Site struct {
 	StyleDir    string
 	MediaDir    string
 	AllVariants map[string]*Site
+	Translator  *translator.Translator
 }
 
-func Init(variant string, contentDir string) *Site {
+func Init(variant string, contentDir string, translator *translator.Translator) *Site {
 	properContentDir, err := filepath.Abs(contentDir)
 	noerr("cannot get content dir path", err)
 
 	templateNames, err := zglob.Glob("templates/**/*.html")
 	noerr("cannot get template names", err)
 
-	template, err := template.ParseFiles(templateNames...)
+
+	funcs := template.FuncMap{
+		"translate": func(text string) string {
+			return translator.Get(text, variant)
+		},
+	}
+
+	templ := template.New("").Funcs(funcs)
+
+	templ, err = templ.ParseFiles(templateNames...)
 	noerr("cannot load templates", err)
+
 
 	return &Site{
 		ContentDir: properContentDir,
@@ -36,7 +48,8 @@ func Init(variant string, contentDir string) *Site {
 		StyleDir:   "styles",
 		MediaDir:   "media",
 		Variant:    variant,
-		Template:   template,
+		Template:   templ,
 		Pages:      make(map[string]*Page),
+		Translator: translator,
 	}
 }

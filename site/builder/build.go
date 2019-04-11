@@ -1,9 +1,14 @@
 package builder
 
-func Build(variants []string, contentDir string) {
+import "github.com/DexterLB/protopit/site/translator"
+
+func Build(variants []string, contentDir string, translatorFile string) {
+	tran, err := translator.Load(translatorFile)
+	noerr("cannot load translator", err)
+
 	sites := make(map[string]*Site)
 	for _, variant := range variants {
-		s := Init(variant, contentDir)
+		s := Init(variant, contentDir, tran)
 		s.Clean()
 		s.RenderCss()
 		s.LoadPages()
@@ -13,4 +18,6 @@ func Build(variants []string, contentDir string) {
 	for _, s := range sites {
 		s.Render()
 	}
+
+	noerr("cannot store translator", tran.Store(translatorFile))
 }
