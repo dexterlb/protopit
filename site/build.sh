@@ -2,4 +2,4 @@
 
 cd "$(dirname "$(readlink -f "${0}")")"
 
-go run 'github.com/DexterLB/protopit/site/build' "${@}"
+go run 'github.com/DexterLB/protopit/site/builder/cmd/build' "${@}"

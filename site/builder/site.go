@@ -4,7 +4,7 @@ import (
 	"html/template"
 	"path/filepath"
 
-	"github.com/DexterLB/protopit/site/translator"
+	"github.com/DexterLB/protopit/site/builder/translator"
 	"github.com/mattn/go-zglob"
 )
 

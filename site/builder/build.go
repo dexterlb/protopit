@@ -1,6 +1,6 @@
 package builder
 
-import "github.com/DexterLB/protopit/site/translator"
+import "github.com/DexterLB/protopit/site/builder/translator"
 
 func Build(variants []string, contentDir string, translatorFile string) {
 	tran, err := translator.Load(translatorFile)
