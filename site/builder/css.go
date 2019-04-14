@@ -33,11 +33,12 @@ func (s *Site) RenderCss() {
 }
 
 func sassImage(ctx context.Context, usv libsass.SassValue) (*libsass.SassValue, error) {
+    // TODO: if 2 arguments given, use the second as sizeSpec
 	args := []interface{}{""}
 	noerr("cannot process sass image() function", libsass.Unmarshal(usv, &args))
 
 	res, err := libsass.Marshal(
-		fmt.Sprintf("url('%s')", sassSite.GetImageData(args[0].(string))),
+		fmt.Sprintf("url('%s')", sassSite.GetImageData(args[0].(string), "")),
 	)
 	return &res, err
 }

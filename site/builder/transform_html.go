@@ -50,21 +50,13 @@ func (s *Site) replaceNode(p *Page, node *html.Node) []*html.Node {
 	return nil
 }
 
-func (t *TransformData) Attr() func(string) string {
-	return func(name string) string {
+func (t *TransformData) Attr(name string) string {
 		for _, a := range t.Node.Attr {
 			if a.Key == name {
 				return a.Val
 			}
 		}
 		return ""
-	}
-}
-
-func (t *TransformData) AbsPageUrl() func(string) string {
-	return func(name string) string {
-		return t.Site.AbsPageUrl(name)
-	}
 }
 
 func (t *TransformData) Content() template.HTML {

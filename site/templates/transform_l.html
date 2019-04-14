@@ -1,5 +1,5 @@
-{{ if ( eq ( call .Attr "url" ) ( .Page.Name ) ) }}
-    <a href="{{ call .AbsPageUrl ( call .Attr "url" ) }}" class="active">{{ .Content }}</a>
+{{ if ( eq ( mcall . "Attr" "url" ) ( .Page.Name ) ) }}
+    <a href="{{ mcall .Site "AbsPageUrl" ( mcall . "Attr" "url" ) }}" class="active">{{ .Content }}</a>
 {{ else }}
-    <a href="{{ call .AbsPageUrl ( call .Attr "url" ) }}">{{ .Content }}</a>
+    <a href="{{ mcall .Site "AbsPageUrl" ( mcall . "Attr" "url" ) }}">{{ .Content }}</a>
 {{ end }}

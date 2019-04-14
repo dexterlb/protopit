@@ -3,6 +3,7 @@ package builder
 import (
 	"html/template"
 	"path/filepath"
+	"reflect"
 
 	"github.com/DexterLB/protopit/site/builder/media"
 	"github.com/DexterLB/protopit/site/builder/translator"
@@ -10,18 +11,20 @@ import (
 )
 
 type Site struct {
-	ContentDir  string
-	Variant     string
-	Pages       map[string]*Page
-	PagesByDate []*Page
-	OutputDir   string
-	Template    *template.Template
-	CssTag      template.HTML
-	StyleDir    string
-	Media       *media.Media
-	MediaDir    string
-	AllVariants map[string]*Site
-	Translator  *translator.Translator
+	ContentDir   string
+	Variant      string
+	Pages        map[string]*Page
+	PagesByDate  []*Page
+	OutputDir    string
+	Template     *template.Template
+	CssTag       template.HTML
+	StyleDir     string
+	Media        *media.Media
+	MediaDir     string
+	MediaOutDir  string
+	MediaUrlBase string
+	AllVariants  map[string]*Site
+	Translator   *translator.Translator
 }
 
 func Init(variant string, contentDir string, translator *translator.Translator) *Site {
@@ -35,6 +38,9 @@ func Init(variant string, contentDir string, translator *translator.Translator) 
 		"translate": func(text string) string {
 			return translator.Get(text, variant)
 		},
+		"mcall": func(obj reflect.Value, method string, args ...reflect.Value) reflect.Value {
+			return obj.MethodByName(method).Call(args)[0]
+		},
 	}
 
 	templ := template.New("").Funcs(funcs)
@@ -43,14 +49,16 @@ func Init(variant string, contentDir string, translator *translator.Translator) 
 	noerr("cannot load templates", err)
 
 	return &Site{
-		ContentDir: properContentDir,
-		OutputDir:  "output",
-		StyleDir:   "styles",
-		MediaDir:   "media",
-		Media:      media.New("cache"),
-		Variant:    variant,
-		Template:   templ,
-		Pages:      make(map[string]*Page),
-		Translator: translator,
+		ContentDir:   properContentDir,
+		OutputDir:    "output",
+		StyleDir:     "styles",
+		MediaDir:     "media",
+		MediaOutDir:  "output/media",
+		MediaUrlBase: "/media",
+		Media:        media.New("cache"),
+		Variant:      variant,
+		Template:     templ,
+		Pages:        make(map[string]*Page),
+		Translator:   translator,
 	}
 }

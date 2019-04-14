@@ -53,7 +53,7 @@ func (i *imageRenderer) HashData(w io.Writer) error {
 	return nil
 }
 
-func (s *Site) GetImage(name string) []byte {
+func (s *Site) GetImage(name string, sizeSpec string) []byte {
 	data, err := s.Media.Get(&imageRenderer{
 		filename: filepath.Join(s.MediaDir, name),
 		sizeSpec: "",
@@ -62,11 +62,20 @@ func (s *Site) GetImage(name string) []byte {
 	return data
 }
 
-func (s *Site) GetImageData(name string) string {
+func (s *Site) GetImageData(name string, sizeSpec string) string {
 	data, err := s.Media.GetBase64(&imageRenderer{
 		filename: filepath.Join(s.MediaDir, name),
 		sizeSpec: "",
 	})
+	noerr("cannot render image", err)
+	return data
+}
+
+func (s *Site) GetImageFile(name string, sizeSpec string) string {
+	data, err := s.Media.GetFile(&imageRenderer{
+		filename: filepath.Join(s.MediaDir, name),
+		sizeSpec: "",
+	}, s.MediaOutDir, s.MediaUrlBase)
 	noerr("cannot render image", err)
 	return data
 }
