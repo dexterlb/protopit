@@ -92,6 +92,10 @@ func (m *Media) GetFile(r Renderable, rootDir string, urlBase string) (string, e
 
     filename := fmt.Sprintf("%s%s", dataHash(data), r.Extension())
     outFile := filepath.Join(rootDir, filename)
+    err = os.MkdirAll(filepath.Dir(outFile), os.ModePerm)
+    if err != nil {
+        return "", fmt.Errorf("cannot make dir for output file: %s", err)
+    }
 
     err = ioutil.WriteFile(outFile, data, 0666)
     if err != nil {

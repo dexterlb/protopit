@@ -11,3 +11,6 @@ print('some code')
 ```
 
 bleh bleh.
+
+squirrel:
+<pic url="squirrel.jpg" />
