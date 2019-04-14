@@ -1,8 +1,8 @@
 package builder
 
 import (
-	"encoding/base64"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -10,29 +10,63 @@ import (
 	"strings"
 )
 
-func (s *Site) GetImage(name string) []byte {
-	f, err := os.Open(filepath.Join(s.MediaDir, name))
-	noerr("cannot open image", err)
-	defer f.Close()
-
-	data, err := ioutil.ReadAll(f)
-	noerr("cannot load image", err)
-	return data
+type imageRenderer struct {
+	filename string
+	sizeSpec string
 }
 
-func (s *Site) GetImageData(name string) string {
-	data := s.GetImage(name)
+func (i *imageRenderer) Extension() string {
+	return filepath.Ext(i.filename)
+}
+
+func (i *imageRenderer) MimeType() string {
+	data, err := ioutil.ReadFile(i.filename)
+	noerr("cannot read image", err)
+
 	ctype := http.DetectContentType(data)
 
-	if strings.HasPrefix(ctype, "text/xml") && strings.HasSuffix(name, ".svg") {
+	if strings.HasPrefix(ctype, "text/xml") && i.Extension() == ".svg" {
 		ctype = strings.ReplaceAll(ctype, "text/xml", "image/svg+xml")
 	}
 
 	if !strings.HasPrefix(ctype, "image/") {
-		noerr("invalid image", fmt.Errorf("%s has type %s which is not image", name, ctype))
+		noerr("invalid image", fmt.Errorf("%s has type %s which is not image", i.filename, ctype))
 	}
 
-	b64data := base64.StdEncoding.EncodeToString(data)
+	return ctype
+}
 
-	return fmt.Sprintf("data:%s;base64,%s", ctype, b64data)
+func (i *imageRenderer) Render() ([]byte, error) {
+	return ioutil.ReadFile(i.filename)
+}
+
+func (i *imageRenderer) HashData(w io.Writer) error {
+	fmt.Fprintf(w, i.filename)
+	fmt.Fprintf(w, i.sizeSpec)
+
+	stat, err := os.Stat(i.filename)
+	if err != nil {
+		return err
+	}
+
+	fmt.Fprintf(w, "%d %s", stat.Size(), stat.ModTime())
+	return nil
+}
+
+func (s *Site) GetImage(name string) []byte {
+	data, err := s.Media.Get(&imageRenderer{
+		filename: filepath.Join(s.MediaDir, name),
+		sizeSpec: "",
+	})
+	noerr("cannot render image", err)
+	return data
+}
+
+func (s *Site) GetImageData(name string) string {
+	data, err := s.Media.GetBase64(&imageRenderer{
+		filename: filepath.Join(s.MediaDir, name),
+		sizeSpec: "",
+	})
+	noerr("cannot render image", err)
+	return data
 }
