@@ -13,4 +13,4 @@ print('some code')
 bleh bleh.
 
 squirrel:
-<pic url="squirrel.jpg" />
+<pic url="squirrel.jpg" size="200x50*2:crop.png" />

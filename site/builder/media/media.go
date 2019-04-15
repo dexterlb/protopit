@@ -11,6 +11,10 @@ import (
 	"path/filepath"
 )
 
+const (
+    HASH_VERSION = 2
+)
+
 type Media struct {
 	cacheDir string
 }
@@ -34,6 +38,8 @@ func calcHash(r Renderable) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	fmt.Fprintf(b, "%d", HASH_VERSION)
+
 	return dataHash(b.Bytes()), nil
 }
 
@@ -41,7 +47,7 @@ func dataHash(data []byte) string {
 	hashRaw := sha256.Sum256(data)
 	hash := make([]byte, 128)
 	base64.RawURLEncoding.Encode(hash, hashRaw[:])
-    return string(hash[0:24])
+	return string(hash[0:24])
 }
 
 func (m *Media) Get(r Renderable) ([]byte, error) {
@@ -50,10 +56,10 @@ func (m *Media) Get(r Renderable) ([]byte, error) {
 		return nil, err
 	}
 
-    err = os.MkdirAll(m.cacheDir, os.ModePerm)
-    if err != nil {
-        return nil, fmt.Errorf("cannot create cache dir: %s", err)
-    }
+	err = os.MkdirAll(m.cacheDir, os.ModePerm)
+	if err != nil {
+		return nil, fmt.Errorf("cannot create cache dir: %s", err)
+	}
 
 	filename := filepath.Join(m.cacheDir, fmt.Sprintf("%s%s", hash, r.Extension()))
 
@@ -90,17 +96,17 @@ func (m *Media) GetFile(r Renderable, rootDir string, urlBase string) (string, e
 		return "", err
 	}
 
-    filename := fmt.Sprintf("%s%s", dataHash(data), r.Extension())
-    outFile := filepath.Join(rootDir, filename)
-    err = os.MkdirAll(filepath.Dir(outFile), os.ModePerm)
-    if err != nil {
-        return "", fmt.Errorf("cannot make dir for output file: %s", err)
-    }
+	filename := fmt.Sprintf("%s%s", dataHash(data), r.Extension())
+	outFile := filepath.Join(rootDir, filename)
+	err = os.MkdirAll(filepath.Dir(outFile), os.ModePerm)
+	if err != nil {
+		return "", fmt.Errorf("cannot make dir for output file: %s", err)
+	}
 
-    err = ioutil.WriteFile(outFile, data, 0666)
-    if err != nil {
-        return "", fmt.Errorf("unable to write file: %s", err)
-    }
+	err = ioutil.WriteFile(outFile, data, 0666)
+	if err != nil {
+		return "", fmt.Errorf("unable to write file: %s", err)
+	}
 
-    return filepath.Join(urlBase, filename), nil
+	return filepath.Join(urlBase, filename), nil
 }
