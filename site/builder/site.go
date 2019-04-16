@@ -41,6 +41,16 @@ func Init(variant string, contentDir string, translator *translator.Translator) 
 		"mcall": func(obj reflect.Value, method string, args ...reflect.Value) reflect.Value {
 			return obj.MethodByName(method).Call(args)[0]
 		},
+		"set": func(v map[string]interface{}, key string, obj interface{}) interface{} {
+		    v[key] = obj
+		    return obj
+		},
+		"get": func(v map[string]interface{}, key string) interface{} {
+		    return v[key]
+		},
+        "make": func() interface{} {
+            return make(map[string]interface{})
+        },
 	}
 
 	templ := template.New("").Funcs(funcs)

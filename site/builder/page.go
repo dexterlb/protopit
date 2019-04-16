@@ -19,6 +19,10 @@ func (p *Page) Content() template.HTML {
 	return template.HTML(p.Html)
 }
 
+func (p *Page) AbsUrl() string {
+    return filepath.Join("/", p.Url)
+}
+
 func (s *Site) Page(name string) *Page {
 	site := s
 	var ok bool
@@ -38,12 +42,4 @@ func (s *Site) Page(name string) *Page {
 	}
 
 	return page
-}
-
-func (s *Site) PageUrl(name string) string {
-	return s.Page(name).Url
-}
-
-func (s *Site) AbsPageUrl(name string) string {
-	return filepath.Join("/", s.PageUrl(name))
 }

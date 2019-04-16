@@ -1,5 +1,14 @@
-{{ if ( eq ( mcall . "Attr" "url" ) ( .Page.Name ) ) }}
-    <a href="{{ mcall .Site "AbsPageUrl" ( mcall . "Attr" "url" ) }}" class="active">{{ .Content }}</a>
+{{ $page := ( mcall .Site "Page" ( mcall . "Attr" "name" ) ) }}
+{{ $v    := make }}
+
+{{ if ( eq .Content "" ) }}
+    {{ $_ := set $v "title" $page.Meta.Title }}
 {{ else }}
-    <a href="{{ mcall .Site "AbsPageUrl" ( mcall . "Attr" "url" ) }}">{{ .Content }}</a>
+    {{ $_ := set $v "title" .Content }}
+{{ end }}
+
+{{ if ( eq $page.Name .Page.Name ) }}
+    <a href="{{ $page.AbsUrl }}" class="active">{{ get $v "title" }}</a>
+{{ else }}
+    <a href="{{ $page.AbsUrl }}">{{ get $v "title" }}</a>
 {{ end }}

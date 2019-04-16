@@ -1,0 +1,5 @@
+<div class="plink">
+    {{ $name := ( mcall . "Attr" "name" ) }}
+    {{ $page := ( mcall .Site "Page" $name ) }}
+    <l name="{{ $name }}"></l>
+</div>

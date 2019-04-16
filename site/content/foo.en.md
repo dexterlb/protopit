@@ -5,7 +5,7 @@ date = 2019-04-09
 
 ---
 
-a link for me: <l url="foo">boo</l>
+a link for me: <l name="foo">boo</l>
 
 # h1 Heading 8-)
 ## h2 Heading

@@ -3,3 +3,8 @@ this is the home page.
 <section class="content">
 	{{ .Page.Content }}
 </section>
+<section class="pagelist">
+    {{ range .Site.PagesByDate }}
+    <plink name="{{ .Name }}"></plink>
+    {{ end }}
+</section>
