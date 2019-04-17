@@ -1,5 +1,16 @@
 <div class="plink">
     {{ $name := ( mcall . "Attr" "name" ) }}
     {{ $page := ( mcall .Site "Page" $name ) }}
+    <l name="{{ $name }}">
+        <div class="thumb-box">
+            {{ if not (eq $page.Meta.Thumb "") }}
+                <pic url="{{ $page.Meta.Thumb }}" size="500x100:crop"></pic>
+            {{ end }}
+        </div>
+    </l>
     <l name="{{ $name }}"></l>
+    <div class="publish-date">
+        {{ translate "Published on" }}
+        <span class="publish-date">{{ $page.Meta.Date }}</span>
+    </div>
 </div>

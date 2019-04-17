@@ -2,5 +2,9 @@
     "Home": {
         "bg": "Къща",
         "en": "Home"
+    },
+    "Published on": {
+        "bg": "Публиковано на",
+        "en": "Published on"
     }
 }

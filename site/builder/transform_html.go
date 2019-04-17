@@ -15,7 +15,8 @@ func (s *Site) transformHtml(p *Page, node *html.Node) *html.Node {
 		next := node.NextSibling
 		parent.RemoveChild(node)
 		for i := range newNodes {
-			parent.InsertBefore(s.transformHtml(p, newNodes[i]), next)
+			parent.InsertBefore(newNodes[i], next)
+            s.transformHtml(p, newNodes[i])
 		}
 		if len(newNodes) > 0 {
 			return newNodes[0]

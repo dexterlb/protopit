@@ -10,6 +10,7 @@ import (
 type MetaData struct {
 	Title string
 	Type  string
+	Thumb string
 	Date  time.Time
 	Url   *string
 }

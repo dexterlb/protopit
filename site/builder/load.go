@@ -35,4 +35,5 @@ func (s *Site) LoadPages() {
 	sort.Slice(s.PagesByDate, func(i, j int) bool {
 		return s.PagesByDate[i].Meta.Date.After(s.PagesByDate[j].Meta.Date)
 	})
+
 }

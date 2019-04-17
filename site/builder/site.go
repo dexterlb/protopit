@@ -42,15 +42,15 @@ func Init(variant string, contentDir string, translator *translator.Translator) 
 			return obj.MethodByName(method).Call(args)[0]
 		},
 		"set": func(v map[string]interface{}, key string, obj interface{}) interface{} {
-		    v[key] = obj
-		    return obj
+			v[key] = obj
+			return obj
 		},
 		"get": func(v map[string]interface{}, key string) interface{} {
-		    return v[key]
+			return v[key]
 		},
-        "make": func() interface{} {
-            return make(map[string]interface{})
-        },
+		"make": func() interface{} {
+			return make(map[string]interface{})
+		},
 	}
 
 	templ := template.New("").Funcs(funcs)
@@ -71,4 +71,14 @@ func Init(variant string, contentDir string, translator *translator.Translator) 
 		Pages:        make(map[string]*Page),
 		Translator:   translator,
 	}
+}
+
+func (s *Site) PagesByType(t string) []*Page {
+	var result []*Page
+	for _, p := range s.PagesByDate {
+		if p.Meta.Type == t {
+			result = append(result, p)
+		}
+	}
+	return result
 }
