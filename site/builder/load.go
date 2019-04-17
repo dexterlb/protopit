@@ -36,4 +36,17 @@ func (s *Site) LoadPages() {
 		return s.PagesByDate[i].Meta.Date.After(s.PagesByDate[j].Meta.Date)
 	})
 
+    for _, page := range s.PagesByDate {
+        if page.Meta.Type == "tag" {
+            s.PagesByTag[page.Name] = nil
+        }
+    }
+    for _, page := range s.PagesByDate {
+        for _, tag := range page.Meta.Tags {
+            if _, ok := s.PagesByTag[tag]; !ok {
+                noerr("cannot build tag table", fmt.Errorf("invalid tag: %s", tag))
+            }
+            s.PagesByTag[tag] = append(s.PagesByTag[tag], page)
+        }
+    }
 }

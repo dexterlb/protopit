@@ -13,6 +13,7 @@ type MetaData struct {
 	Thumb string
 	Date  time.Time
 	Url   *string
+	Tags []string
 }
 
 func ParseMetaData(data []byte) *MetaData {
@@ -23,8 +24,12 @@ func ParseMetaData(data []byte) *MetaData {
 	if meta.Type == "" {
 		meta.Type = "normal"
 	}
-	if meta.Date.IsZero() {
+	if meta.Date.IsZero() && meta.Type == "normal" {
 		noerr("cannot parse metadata", fmt.Errorf("no date!"))
 	}
 	return &meta
+}
+
+func (m *MetaData) HasTags() bool {
+    return len(m.Tags) != 0
 }

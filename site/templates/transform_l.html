@@ -7,7 +7,7 @@
     {{ $_ := set $v "title" .Content }}
 {{ end }}
 
-{{ if ( eq $page.Name .Page.Name ) }}
+{{ if ( eq $page.Url .Page.Url ) }}
     <a href="{{ $page.AbsUrl }}" class="active">{{ get $v "title" }}</a>
 {{ else }}
     <a href="{{ $page.AbsUrl }}">{{ get $v "title" }}</a>

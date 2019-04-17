@@ -1,6 +1,7 @@
 package builder
 
 import (
+	"fmt"
 	"html/template"
 	"path/filepath"
 	"reflect"
@@ -14,6 +15,7 @@ type Site struct {
 	ContentDir   string
 	Variant      string
 	Pages        map[string]*Page
+	PagesByTag   map[string][]*Page
 	PagesByDate  []*Page
 	OutputDir    string
 	Template     *template.Template
@@ -51,6 +53,10 @@ func Init(variant string, contentDir string, translator *translator.Translator) 
 		"make": func() interface{} {
 			return make(map[string]interface{})
 		},
+		"err": func(msg string, args ...interface{}) interface{} {
+			noerr("cannot render template", fmt.Errorf(msg, args...))
+			return 42
+		},
 	}
 
 	templ := template.New("").Funcs(funcs)
@@ -69,6 +75,7 @@ func Init(variant string, contentDir string, translator *translator.Translator) 
 		Variant:      variant,
 		Template:     templ,
 		Pages:        make(map[string]*Page),
+		PagesByTag:   make(map[string][]*Page),
 		Translator:   translator,
 	}
 }
@@ -81,4 +88,8 @@ func (s *Site) PagesByType(t string) []*Page {
 		}
 	}
 	return result
+}
+
+func (s *Site) GetPagesByTag(tag string) []*Page {
+    return s.PagesByTag[tag]
 }

@@ -15,8 +15,9 @@
                 <div class="logo"></div>
                 <nav>
                     <l name="home">{{ translate "Home" }}</l>
-                    <l name="foo">Foo</a>
-                    <l name="bar">Bar</a>
+                    <l name="foo"></l>
+                    <l name="bar"></l>
+                    <l name="taglist"></l>
                 </nav>
                 <div class="languages">
                     <l name="{{ .Page.Name }}:en">EN</l>
@@ -26,9 +27,26 @@
             <article>
                 {{ if ( eq .Page.Meta.Type "home" ) }}
                     {{ template "home.html" . }}
-                {{ else }}
+                {{ else if ( eq .Page.Meta.Type "normal" ) }}
                     {{ template "normal.html" . }}
+                {{ else if ( eq .Page.Meta.Type "taglist" ) }}
+                    {{ template "taglist.html" . }}
+                {{ else if ( eq .Page.Meta.Type "tag" ) }}
+                    {{ template "tag.html" . }}
+                {{ else }}
+                    {{ err "unknown page type: %s" .Page.Meta.Type }}
                 {{ end }}
+
+                <footer>
+                    {{ if .Page.Meta.HasTags }}
+                        Tags:
+                        <span class="tags">
+                        {{ range .Page.Meta.Tags }}
+                            <l name="{{ . }}"></l>
+                        {{ end }}
+                        </span>
+                    {{ end }}
+                </footer>
             </article>
         {{ end }}
     </body>

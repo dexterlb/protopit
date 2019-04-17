@@ -9,8 +9,10 @@
         </div>
     </l>
     <l name="{{ $name }}"></l>
-    <div class="publish-date">
-        {{ translate "Published on" }}
-        <span class="publish-date">{{ $page.Meta.Date }}</span>
-    </div>
+    {{ if not $page.Meta.Date.IsZero }}
+        <div class="publish-date">
+            {{ translate "Published on" }}
+            <span class="publish-date">{{ $page.Meta.Date }}</span>
+        </div>
+    {{ end }}
 </div>
