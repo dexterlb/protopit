@@ -4,7 +4,5 @@ this is the home page.
 	{{ .Page.Content }}
 </section>
 <section class="pagelist">
-    {{ range ( mcall .Site "PagesByType" "normal" ) }}
-        <plink name="{{ .Name }}"></plink>
-    {{ end }}
+    {{ template "pagelist.html" ( mcall .Site "PagesByType" "normal" ) }}
 </section>

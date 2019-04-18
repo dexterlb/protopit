@@ -3,7 +3,5 @@
 	{{ .Page.Content }}
 </section>
 <section class="pagelist">
-    {{ range ( mcall .Site "GetPagesByTag" .Page.Name ) }}
-        <plink name="{{ .Name }}"></plink>
-    {{ end }}
+    {{ template "pagelist.html" ( mcall .Site "GetPagesByTag" .Page.Name ) }}
 </section>

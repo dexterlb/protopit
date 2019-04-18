@@ -3,7 +3,7 @@
     {{ $page := ( mcall .Site "Page" $name ) }}
     <l name="{{ $name }}">
         <div class="thumb-box">
-            {{ if not (eq $page.Meta.Thumb "") }}
+            {{ if not ( or (eq $page.Meta.Thumb "") (eq ( mcall . "Attr" "thumb" ) "no" ) ) }}
                 <pic url="{{ $page.Meta.Thumb }}" size="500x100:crop"></pic>
             {{ end }}
         </div>
@@ -14,5 +14,8 @@
             {{ translate "Published on" }}
             <span class="publish-date">{{ $page.Meta.Date }}</span>
         </div>
+    {{ end }}
+    {{ if $page.Meta.EventData }}
+
     {{ end }}
 </div>

@@ -4,7 +4,10 @@
         "en": "Home"
     },
     "Published on": {
-        "bg": "Публиковано на",
+        "bg": "Published on",
         "en": "Published on"
+    },
+    "foo": {
+        "bg": "foo"
     }
 }

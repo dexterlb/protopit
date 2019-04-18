@@ -2,13 +2,13 @@ package builder
 
 import "github.com/DexterLB/protopit/site/builder/translator"
 
-func Build(variants []string, contentDir string, translatorFile string) {
+func Build(variants []string, contentDir string, translatorFile string, loc string) {
 	tran, err := translator.Load(translatorFile)
 	noerr("cannot load translator", err)
 
 	sites := make(map[string]*Site)
 	for _, variant := range variants {
-		s := Init(variant, contentDir, tran)
+		s := Init(variant, contentDir, loc, tran)
 		s.Clean()
 		s.RenderCss()
 		s.LoadPages()

@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"path/filepath"
 	"reflect"
+	"time"
 
 	"github.com/DexterLB/protopit/site/builder/media"
 	"github.com/DexterLB/protopit/site/builder/translator"
@@ -27,9 +28,10 @@ type Site struct {
 	MediaUrlBase string
 	AllVariants  map[string]*Site
 	Translator   *translator.Translator
+	Location     *time.Location
 }
 
-func Init(variant string, contentDir string, translator *translator.Translator) *Site {
+func Init(variant string, contentDir string, locationSpec string, translator *translator.Translator) *Site {
 	properContentDir, err := filepath.Abs(contentDir)
 	noerr("cannot get content dir path", err)
 
@@ -64,6 +66,9 @@ func Init(variant string, contentDir string, translator *translator.Translator) 
 	templ, err = templ.ParseFiles(templateNames...)
 	noerr("cannot load templates", err)
 
+	loc, err := time.LoadLocation(locationSpec)
+	noerr("cannot determine time zone", err)
+
 	return &Site{
 		ContentDir:   properContentDir,
 		OutputDir:    "output",
@@ -77,6 +82,7 @@ func Init(variant string, contentDir string, translator *translator.Translator) 
 		Pages:        make(map[string]*Page),
 		PagesByTag:   make(map[string][]*Page),
 		Translator:   translator,
+		Location:     loc,
 	}
 }
 
@@ -91,5 +97,5 @@ func (s *Site) PagesByType(t string) []*Page {
 }
 
 func (s *Site) GetPagesByTag(tag string) []*Page {
-    return s.PagesByTag[tag]
+	return s.PagesByTag[tag]
 }

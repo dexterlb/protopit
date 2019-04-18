@@ -49,4 +49,6 @@ func (s *Site) LoadPages() {
             s.PagesByTag[tag] = append(s.PagesByTag[tag], page)
         }
     }
+
+    s.SanityCheck()
 }

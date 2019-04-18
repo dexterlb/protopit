@@ -1,0 +1,7 @@
+{{ range $i, $page := . }}
+    {{ if ( ge $i 10 ) }}
+        <plink name="{{ $page.Name }}" thumb="no"></plink>
+    {{ else }}
+        <plink name="{{ $page.Name }}"></plink>
+    {{ end }}
+{{ end }}

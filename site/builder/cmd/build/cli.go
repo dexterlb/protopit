@@ -10,7 +10,7 @@ import (
 )
 
 func build() {
-	builder.Build([]string{"en", "bg", "any"}, "content", "translations.json")
+	builder.Build([]string{"en", "bg", "any"}, "content", "translations.json", "Europe/Sofia")
 }
 
 func serve(address string) {
