@@ -11,9 +11,13 @@
         "bg": "Публикувано на",
         "en": "Published on"
     },
+    "Tags": {
+        "bg": "Тагове",
+        "en": "Tags"
+    },
     "Upcoming events": {
         "bg": "Upcoming events",
-        "en": "Upcoming events"
+        "en": "Скорошни събития"
     },
     "this is the home page.": {
         "bg": "туй е къщовата страница.",

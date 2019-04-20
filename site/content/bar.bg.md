@@ -1,6 +1,8 @@
 ```meta
 title = "Дъ Бар"
 date = 2019-04-10
+thumb = "squirrel.jpg"
+tags = ['tags/animals']
 ```
 
 Още текст на бг, <l name="foo">ето линк към фоо</l> и
@@ -10,4 +12,5 @@ date = 2019-04-10
 print('това тук е питоньски код')
 ```
 
-блах.
+катеричка:
+<pic url="squirrel.jpg"></pic>

@@ -41,7 +41,7 @@
 
                 <footer>
                     {{ if .Page.Meta.HasTags }}
-                        Tags:
+                        {{ translate "Tags" }}:
                         <span class="tags">
                         {{ range .Page.Meta.Tags }}
                             <l name="{{ . }}"></l>
