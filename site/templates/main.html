@@ -5,6 +5,7 @@
         <title>
             {{ .Page.Meta.Title }} - protopit
         </title>
+        <link rel="icon" type="image/png" href="{{ mcall_url .Site "GetImageData" "logo.svg" "32x32.png" }}" />
         {{ .Site.CssTag }}
     </head>
     <body>
@@ -23,6 +24,7 @@
                     <l name="{{ .Page.Name }}:en">EN</l>
                     <l name="{{ .Page.Name }}:bg">BG</l>
                 </div>
+                {{ template "upcoming_events.html" . }}
             </aside>
             <article>
                 {{ if ( eq .Page.Meta.Type "home" ) }}

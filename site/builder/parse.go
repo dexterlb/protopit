@@ -17,7 +17,7 @@ func markdownInspect(s *Site, p *Page) func(io.Writer, ast.Node, bool) (ast.Walk
 		switch node := anyNode.(type) {
 		case *ast.CodeBlock:
 			if string(node.Info) == "meta" {
-				p.Meta = ParseMetaData(node.Literal, s.Location, s.Variant, s.Translator)
+				p.Meta = ParseMetaData(node.Literal, s.Location, s.Variant)
 				return ast.GoToNext, true // skip
 			}
 		}

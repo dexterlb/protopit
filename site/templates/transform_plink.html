@@ -12,10 +12,20 @@
     {{ if not $page.Meta.Date.IsZero }}
         <div class="publish-date">
             {{ translate "Published on" }}
-            <span class="publish-date">{{ $page.Meta.Date }}</span>
+            <span class="publish-date">{{ tformat "date" $page.Meta.Date }}</span>
         </div>
     {{ end }}
     {{ if $page.Meta.EventData }}
-
+        <div class="event-date">
+            {{ if not (eq $page.Meta.EventData.HumanReadable "") }}
+                <span class="human">{{ $page.Meta.EventData.HumanReadable}}</span>
+            {{ end }}
+            {{ if not (never $page.Meta.EventData.Next) }}
+                <span class="next">
+                    <span class="info">{{ translate "Next event: " }}</span>
+                    {{ tformat "datetime" $page.Meta.EventData.Next }}
+                </span>
+            {{ end }}
+        </div>
     {{ end }}
 </div>

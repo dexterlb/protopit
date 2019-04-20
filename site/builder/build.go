@@ -16,6 +16,7 @@ func Build(variants []string, contentDir string, translatorFile string, loc stri
 		sites[variant] = s
 	}
 	for _, s := range sites {
+	    s.SanityCheck()
 		s.Render()
 	}
 

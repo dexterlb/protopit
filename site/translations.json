@@ -3,11 +3,20 @@
         "bg": "Къща",
         "en": "Home"
     },
+    "Next event: ": {
+        "bg": "Следващо събитие: ",
+        "en": "Next event: "
+    },
     "Published on": {
-        "bg": "Published on",
+        "bg": "Публикувано на",
         "en": "Published on"
     },
-    "foo": {
-        "bg": "foo"
+    "Upcoming events": {
+        "bg": "Upcoming events",
+        "en": "Upcoming events"
+    },
+    "this is the home page.": {
+        "bg": "туй е къщовата страница.",
+        "en": "this is the home page."
     }
 }

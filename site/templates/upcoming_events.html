@@ -1,0 +1,13 @@
+{{ if .Site.UpcomingEvents }}
+    <div class="upcoming-events">
+        <div class="info">
+            {{ translate "Upcoming events" }}:
+        </div>
+        {{ range $page := ( take 5 .Site.UpcomingEvents ) }}
+            <l name="{{ $page.Name }}"></l>
+            <div class="next">
+                {{ tformat "datetime" $page.Meta.EventData.Next }}
+            </div>
+        {{ end }}
+    </div>
+{{ end }}

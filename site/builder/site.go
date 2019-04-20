@@ -13,22 +13,23 @@ import (
 )
 
 type Site struct {
-	ContentDir   string
-	Variant      string
-	Pages        map[string]*Page
-	PagesByTag   map[string][]*Page
-	PagesByDate  []*Page
-	OutputDir    string
-	Template     *template.Template
-	CssTag       template.HTML
-	StyleDir     string
-	Media        *media.Media
-	MediaDir     string
-	MediaOutDir  string
-	MediaUrlBase string
-	AllVariants  map[string]*Site
-	Translator   *translator.Translator
-	Location     *time.Location
+	ContentDir     string
+	Variant        string
+	Pages          map[string]*Page
+	PagesByTag     map[string][]*Page
+	PagesByDate    []*Page
+	UpcomingEvents []*Page
+	OutputDir      string
+	Template       *template.Template
+	CssTag         template.HTML
+	StyleDir       string
+	Media          *media.Media
+	MediaDir       string
+	MediaOutDir    string
+	MediaUrlBase   string
+	AllVariants    map[string]*Site
+	Translator     *translator.Translator
+	Location       *time.Location
 }
 
 func Init(variant string, contentDir string, locationSpec string, translator *translator.Translator) *Site {
@@ -45,6 +46,10 @@ func Init(variant string, contentDir string, locationSpec string, translator *tr
 		"mcall": func(obj reflect.Value, method string, args ...reflect.Value) reflect.Value {
 			return obj.MethodByName(method).Call(args)[0]
 		},
+		"mcall_url": func(obj reflect.Value, method string, args ...reflect.Value) template.URL {
+            raw := obj.MethodByName(method).Call(args)[0].String()
+            return template.URL(raw)
+		},
 		"set": func(v map[string]interface{}, key string, obj interface{}) interface{} {
 			v[key] = obj
 			return obj
@@ -59,6 +64,29 @@ func Init(variant string, contentDir string, locationSpec string, translator *tr
 			noerr("cannot render template", fmt.Errorf(msg, args...))
 			return 42
 		},
+		"never": func(t time.Time) bool {
+			return t.IsZero()
+		},
+        "take": func(n int, items reflect.Value) reflect.Value {
+            l := items.Len()
+            if n < l {
+                l = n
+            }
+            return items.Slice(0, l)
+        },
+        "tformat": func(option string, t time.Time) string {
+            switch(option) {
+                case "date":
+                    return t.Format("2006-01-02")
+                case "time":
+                    return t.Format("15:04")
+                case "datetime":
+                    return t.Format("2006-01-02 15:04")
+                default:
+                    noerr("cannot format time", fmt.Errorf("unknown format: %s", option))
+                    return ""
+            }
+        },
 	}
 
 	templ := template.New("").Funcs(funcs)
