@@ -25,6 +25,11 @@
                     <span class="info">{{ translate "Next event: " }}</span>
                     {{ tformat "datetime" $page.Meta.EventData.Next }}
                 </span>
+            {{ else if not (never $page.Meta.EventData.Prev) }}
+                <span class="next">
+                    <span class="info">{{ translate "Last event: " }}</span>
+                    {{ tformat "datetime" $page.Meta.EventData.Prev }}
+                </span>
             {{ end }}
         </div>
     {{ end }}

@@ -45,12 +45,17 @@ type EventData struct {
 	Rule          *rrule.Set
 	RuleRaw       string
 	Next          time.Time
+	Prev          time.Time
 	HumanReadable string
 	location      *time.Location
 }
 
 func (e *EventData) After(t time.Time) time.Time {
 	return e.Rule.After(t, false).In(e.location)
+}
+
+func (e *EventData) Before(t time.Time) time.Time {
+	return e.Rule.Before(t, false).In(e.location)
 }
 
 func parseEventData(s string, loc *time.Location, variant string) *EventData {
@@ -94,5 +99,6 @@ func parseEventData(s string, loc *time.Location, variant string) *EventData {
 	noerr("cannot parse event date rule", err)
 	ed.Rule = rule
 	ed.Next = ed.After(time.Now())
+	ed.Prev = ed.Before(time.Now())
 	return ed
 }

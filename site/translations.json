@@ -3,6 +3,10 @@
         "bg": "Къщаа",
         "en": "Home"
     },
+    "Last event: ": {
+        "bg": "Last event: ",
+        "en": "Last event: "
+    },
     "Next event: ": {
         "bg": "Следващо събитие: ",
         "en": "Next event: "
