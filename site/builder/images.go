@@ -50,8 +50,8 @@ func (i *imageRenderer) Render() ([]byte, error) {
 }
 
 func (i *imageRenderer) HashData(w io.Writer) error {
-	fmt.Fprintf(w, i.filename)
-	fmt.Fprintf(w, i.sizeSpec)
+	fmt.Fprintf(w, "%s\n", i.filename)
+	fmt.Fprintf(w, "%s\n", i.sizeSpec)
 
 	stat, err := os.Stat(i.filename)
 	if err != nil {
@@ -81,12 +81,12 @@ func (s *Site) GetImageData(name string, sizeSpec string) string {
 }
 
 func (s *Site) GetImageFile(name string, sizeSpec string) string {
-	data, err := s.Media.GetFile(&imageRenderer{
+	url, err := s.Media.GetFile(&imageRenderer{
 		filename: filepath.Join(s.MediaDir, name),
 		sizeSpec: sizeSpec,
 	}, s.MediaOutDir, s.MediaUrlBase)
 	noerr("cannot render image", err)
-	return data
+	return url
 }
 
 type imageOptions struct {
