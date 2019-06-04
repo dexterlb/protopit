@@ -1,5 +1,7 @@
 @import 'firasans';
 
+$bg: #274b22;
+
 $sidebar_width: 12rem;
 $article_width: 40rem;
 $body_width: 52rem;
@@ -38,13 +40,13 @@ article {
 	margin: 0;
 	padding: 0;
 	width: $sidebar_width;
-	background-color: #f1f1f1;
+	background-color: $bg;
 	position: fixed;
 	height: 100%;
 	overflow: auto;
 
 	.logo {
-		background-image: image('logo.svg');
+		background-image: image('logo_square.svg');
 		width: 100%;
 		padding-top: 100%;
 		background-size: cover;
