@@ -12,7 +12,7 @@ import (
 )
 
 const (
-    HASH_VERSION = 2
+    HASH_VERSION = 3
 )
 
 type Media struct {

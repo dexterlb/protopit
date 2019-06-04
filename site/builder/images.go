@@ -142,7 +142,7 @@ func convertImage(data []byte, inFormat string, opts *imageOptions) ([]byte, err
 	width := opts.width
 	height := opts.height
 
-	fmt.Fprintf(shell, `magick convert %s:- `, inFormat)
+	fmt.Fprintf(shell, `magick convert -background none -antialias %s:- `, inFormat)
 	if opts.method == "" || opts.method == "fit" || opts.method == "scale" {
 		if width == 0 {
 			width = 99999
