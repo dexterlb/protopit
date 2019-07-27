@@ -10,15 +10,17 @@ import (
 )
 
 type MetaData struct {
-	Title     string
-	Type      string
-	Thumb     string
-	Date      time.Time
-	Url       *string
-	Tags      []string
-	Event     string
-	EventData *EventData
-	location  *time.Location
+	Title       string
+	Description string
+	Type        string
+	Thumb       string
+	Date        time.Time
+	Url         *string
+	Tags        []string
+    Event       string
+    NoFeed      bool
+	EventData   *EventData
+	location    *time.Location
 }
 
 func ParseMetaData(data []byte, loc *time.Location, variant string) *MetaData {

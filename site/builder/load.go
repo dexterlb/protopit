@@ -31,6 +31,7 @@ func (s *Site) LoadPages() {
 
 	for _, page := range s.Pages {
 		s.PagesByDate = append(s.PagesByDate, page)
+		s.PagesByUrl[page.BareUrl] = page
 		if page.Meta.EventData != nil && !page.Meta.EventData.Next.IsZero() {
 			s.UpcomingEvents = append(s.UpcomingEvents, page)
 		}

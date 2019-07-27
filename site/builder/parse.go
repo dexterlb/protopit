@@ -39,7 +39,9 @@ func (s *Site) ParsePage(filename string, name string) {
 		page.Url = filepath.Join(*page.Meta.Url)
 	} else {
 		page.Url = filepath.Join(page.Name)
-	}
+    }
+
+    page.BareUrl = page.Url
 
 	if s.Variant != "any" {
 		page.Url = filepath.Join(page.Url, s.Variant)

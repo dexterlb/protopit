@@ -6,6 +6,11 @@
             {{ .Page.Meta.Title }} - protopit
         </title>
         <link rel="icon" type="image/png" href="{{ mcall_url .Site "GetImageData" "icon.svg" "32x32.png" }}" />
+        {{ if .Site.HasFeeds }}
+            <link href="{{ mcall .Site "FeedUrl" "atom" }}" type="application/atom+xml" rel="alternate" title="{{ translate "Sitewide Atom feed" }}" />
+            <link href="{{ mcall .Site "FeedUrl" "rss" }}" type="application/rss+xml" rel="alternate" title="{{ translate "Sitewide RSS feed" }}" />
+            <link href="{{ mcall .Site "FeedUrl" "json" }}" type="application/json" rel="alternate" title="{{ translate "Sitewide JSON feed" }}" />
+        {{ end }}
         {{ .Site.CssTag }}
     </head>
     <body>
@@ -24,6 +29,14 @@
                     <l name="{{ .Page.Name }}:en">EN</l>
                     <l name="{{ .Page.Name }}:bg">BG</l>
                 </div>
+                {{ if .Site.HasFeeds }}
+                    <div class="feeds">
+                        {{ translate "Feeds" }}:
+                        <a href="{{ mcall .Site "FeedUrl" "atom" }}">atom</a>
+                        <a href="{{ mcall .Site "FeedUrl" "rss" }}">rss</a>
+                        <a href="{{ mcall .Site "FeedUrl" "json" }}">json</a>
+                    </div>
+                {{ end }}
                 {{ template "upcoming_events.html" . }}
             </aside>
             <article>

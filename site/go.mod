@@ -5,6 +5,7 @@ go 1.12
 require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/gomarkdown/markdown v0.0.0-20190222000725-ee6a7931a1e4
+	github.com/gorilla/feeds v1.1.1
 	github.com/mattn/go-zglob v0.0.1
 	github.com/teambition/rrule-go v1.3.0
 	github.com/urfave/cli v1.20.0

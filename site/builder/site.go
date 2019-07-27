@@ -3,6 +3,7 @@ package builder
 import (
 	"fmt"
 	"html/template"
+	"net/url"
 	"path/filepath"
 	"reflect"
 	"time"
@@ -16,23 +17,26 @@ type Site struct {
 	ContentDir     string
 	Variant        string
 	Pages          map[string]*Page
+	PagesByUrl     map[string]*Page
 	PagesByTag     map[string][]*Page
 	PagesByDate    []*Page
 	UpcomingEvents []*Page
 	OutputDir      string
 	Template       *template.Template
 	CssTag         template.HTML
+	HasFeeds       bool
 	StyleDir       string
 	Media          *media.Media
 	MediaDir       string
 	MediaOutDir    string
 	MediaUrlBase   string
+	BaseUrl        string
 	AllVariants    map[string]*Site
 	Translator     *translator.Translator
 	Location       *time.Location
 }
 
-func Init(variant string, contentDir string, locationSpec string, translator *translator.Translator) *Site {
+func Init(variant string, contentDir string, locationSpec string, translator *translator.Translator, url string) *Site {
 	properContentDir, err := filepath.Abs(contentDir)
 	noerr("cannot get content dir path", err)
 
@@ -47,8 +51,8 @@ func Init(variant string, contentDir string, locationSpec string, translator *tr
 			return obj.MethodByName(method).Call(args)[0]
 		},
 		"mcall_url": func(obj reflect.Value, method string, args ...reflect.Value) template.URL {
-            raw := obj.MethodByName(method).Call(args)[0].String()
-            return template.URL(raw)
+			raw := obj.MethodByName(method).Call(args)[0].String()
+			return template.URL(raw)
 		},
 		"set": func(v map[string]interface{}, key string, obj interface{}) interface{} {
 			v[key] = obj
@@ -67,26 +71,26 @@ func Init(variant string, contentDir string, locationSpec string, translator *tr
 		"never": func(t time.Time) bool {
 			return t.IsZero()
 		},
-        "take": func(n int, items reflect.Value) reflect.Value {
-            l := items.Len()
-            if n < l {
-                l = n
-            }
-            return items.Slice(0, l)
-        },
-        "tformat": func(option string, t time.Time) string {
-            switch(option) {
-                case "date":
-                    return t.Format("2006-01-02")
-                case "time":
-                    return t.Format("15:04")
-                case "datetime":
-                    return t.Format("2006-01-02 15:04")
-                default:
-                    noerr("cannot format time", fmt.Errorf("unknown format: %s", option))
-                    return ""
-            }
-        },
+		"take": func(n int, items reflect.Value) reflect.Value {
+			l := items.Len()
+			if n < l {
+				l = n
+			}
+			return items.Slice(0, l)
+		},
+		"tformat": func(option string, t time.Time) string {
+			switch option {
+			case "date":
+				return t.Format("2006-01-02")
+			case "time":
+				return t.Format("15:04")
+			case "datetime":
+				return t.Format("2006-01-02 15:04")
+			default:
+				noerr("cannot format time", fmt.Errorf("unknown format: %s", option))
+				return ""
+			}
+		},
 	}
 
 	templ := template.New("").Funcs(funcs)
@@ -109,8 +113,10 @@ func Init(variant string, contentDir string, locationSpec string, translator *tr
 		Template:     templ,
 		Pages:        make(map[string]*Page),
 		PagesByTag:   make(map[string][]*Page),
+		PagesByUrl:   make(map[string]*Page),
 		Translator:   translator,
 		Location:     loc,
+		BaseUrl:      url,
 	}
 }
 
@@ -126,4 +132,16 @@ func (s *Site) PagesByType(t string) []*Page {
 
 func (s *Site) GetPagesByTag(tag string) []*Page {
 	return s.PagesByTag[tag]
+}
+
+func (s *Site) CanonicalUrl(suffix string) string {
+    if filepath.Join(suffix) == "/" {
+        return s.BaseUrl
+    }
+
+	u, err := url.Parse(s.BaseUrl)
+	noerr("invalid url", err)
+
+	u.Path = filepath.Join(u.Path, suffix)
+	return u.String()
 }

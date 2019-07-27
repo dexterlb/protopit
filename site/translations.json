@@ -1,4 +1,8 @@
 {
+    "Feeds": {
+        "bg": "Feeds",
+        "en": "Feeds"
+    },
     "Home": {
         "bg": "Къщаа",
         "en": "Home"
@@ -14,6 +18,21 @@
     "Published on": {
         "bg": "Публикувано на",
         "en": "Published on"
+    },
+    "Sitewide Atom feed": {
+        "any": "Sitewide Atom feed",
+        "bg": "Sitewide Atom feed",
+        "en": "Sitewide Atom feed"
+    },
+    "Sitewide JSON feed": {
+        "any": "Sitewide JSON feed",
+        "bg": "Sitewide JSON feed",
+        "en": "Sitewide JSON feed"
+    },
+    "Sitewide RSS feed": {
+        "any": "Sitewide RSS feed",
+        "bg": "Sitewide RSS feed",
+        "en": "Sitewide RSS feed"
     },
     "Tags": {
         "bg": "Тагове",

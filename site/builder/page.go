@@ -12,7 +12,8 @@ type Page struct {
 	Meta     *MetaData
 	Name     string
 	Html     []byte
-	Url		 string
+    Url		 string
+    BareUrl string
 }
 
 func (p *Page) Content() template.HTML {
