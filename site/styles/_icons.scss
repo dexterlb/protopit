@@ -1,0 +1,18 @@
+.icon {
+    display: inline-block;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    span.link {
+        display: none;
+    }
+}
+
+.icon_lang_en {
+    background-image: image('icons/lang_en.svg');
+}
+
+.icon_lang_bg {
+    background-image: image('icons/lang_bg.svg');
+}

@@ -7,8 +7,14 @@
     {{ $_ := set $v "title" .Content }}
 {{ end }}
 
+{{ $class := mcall . "Attr" "class" }}
 {{ if ( eq $page.Url .Page.Url ) }}
-    <a href="{{ $page.AbsUrl }}" class="active">{{ get $v "title" }}</a>
+    {{ $class = join " " $class "active" }}
+{{ end }}
+{{ $class = strip $class }}
+
+{{ if ( not ( eq $class "" ) ) }}
+    <a href="{{ $page.AbsUrl }}" class="{{ $class }}"><span class="link">{{ get $v "title" }}</span></a>
 {{ else }}
-    <a href="{{ $page.AbsUrl }}">{{ get $v "title" }}</a>
+    <a href="{{ $page.AbsUrl }}"><span class="link">{{ get $v "title" }}</span></a>
 {{ end }}

@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"path/filepath"
 	"reflect"
+	"strings"
 	"time"
 
 	"github.com/DexterLB/protopit/site/builder/media"
@@ -91,6 +92,12 @@ func Init(variant string, contentDir string, locationSpec string, translator *tr
 				return ""
 			}
 		},
+		"strip": func(s string) string {
+			return strings.TrimSpace(s)
+		},
+		"join": func(sep string, s ...string) string {
+			return strings.Join(s, sep)
+		},
 	}
 
 	templ := template.New("").Funcs(funcs)
@@ -135,9 +142,9 @@ func (s *Site) GetPagesByTag(tag string) []*Page {
 }
 
 func (s *Site) CanonicalUrl(suffix string) string {
-    if filepath.Join(suffix) == "/" {
-        return s.BaseUrl
-    }
+	if filepath.Join(suffix) == "/" {
+		return s.BaseUrl
+	}
 
 	u, err := url.Parse(s.BaseUrl)
 	noerr("invalid url", err)
