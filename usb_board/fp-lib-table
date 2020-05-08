@@ -1,0 +1,4 @@
+(fp_lib_table
+  (lib (name "usb_connectors")(type "KiCad")(uri "${KIPRJMOD}/usb_connectors.pretty")(options "")(descr ""))
+  (lib (name "connectors")(type "KiCad")(uri "${KIPRJMOD}/connectors.pretty")(options "")(descr ""))
+)
