@@ -17,8 +17,11 @@
         pkgs.gnused
       ];
       convert-to-protoprinter = pkgs.writeShellScriptBin "convert-to-protoprinter" ''
-        PATH=${lib.makeBinPath used-packages}
+        set -euo pipefail
+
         CONFIG=${./config.ini}
+        export PATH=${lib.makeBinPath used-packages}
+        export LOCALE_ARCHIVE="${pkgs.glibcLocales}/lib/locale/locale-archive";
 
         for f in $*
         do
@@ -35,6 +38,10 @@
       '';
     in
     {
+      packages.x86_64-linux = {
+        inherit convert-to-protoprinter;
+        default = convert-to-protoprinter;
+      };
       devShell.x86_64-linux = pkgs.mkShell {
         packages = [ convert-to-protoprinter ] ++ used-packages;
         shellHook = ''
